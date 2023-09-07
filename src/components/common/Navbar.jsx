@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import {Link} from "react-router-dom"
 
 const Navbar = () => {
@@ -6,6 +7,14 @@ const Navbar = () => {
     <header className="w-11/12 h-min container mx-auto pt-5 ">
       <nav className="flex flex-row justify-between items-center">
         <p className="text-2xl font-bold cursor-pointer uppercase"><Link to="/">The Daily Blog</Link></p>
+=======
+
+const Navbar = () => {
+  return (
+    <header className="w-full h-min px-10 pt-5">
+      <nav className="flex flex-row justify-between items-center">
+        <p className="text-3xl font-bold cursor-pointer">Blog</p>
+>>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
 
         <div class="max-w-md mx-auto">
           <div class="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-[#1E293B] overflow-hidden">
@@ -36,8 +45,13 @@ const Navbar = () => {
         </div>
 
         <ul className="flex gap-x-3 cursor-pointer font-semibold">
+<<<<<<< HEAD
           <li className="hover:text-sky-500"><Link to="/login">Login</Link></li>
           <li className="hover:text-sky-500"><Link to="/signup">Sign Up</Link> </li>
+=======
+          <li className="hover:text-sky-500">Login</li>
+          <li className="hover:text-sky-500">Register</li>
+>>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
         </ul>
       </nav>
     </header>
