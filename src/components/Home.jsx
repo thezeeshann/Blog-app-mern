@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from "react";
 import image from "../assets/javascript.webp";
 import java from "../assets/java.png"
@@ -100,14 +99,3 @@ const Home = () => {
 export default Home;
 
 // border-2 border-red-500
-=======
-import React from 'react'
-
-const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
-
-export default Home
->>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
