@@ -5,11 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-<<<<<<< HEAD
     "start": "node index.js",
-=======
-    "start": "index.js",
->>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
     "dev": "nodemon index.js"
   },
   "keywords": [],

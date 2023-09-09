@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 import validator from "validator";
-<<<<<<< HEAD
-=======
-import mailSender from "../utils/mailSender.js";
-import emailTemplate from "../email/emailVerificationTemplate.js";
->>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
 
 const UserSchema = new mongoose.Schema(
   {

@@ -29,11 +29,7 @@ const CreateBlog = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 const getAllBlog = async (req, res) => {
-=======
-const getAllBlogs = async (req, res) => {
->>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
   try {
     const blogs = await BlogModal.find();
     return res.status(200).json({
@@ -48,7 +44,6 @@ const getAllBlogs = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 const getSingleBlog = async (req,res)=>{
   try {
     const blogId = req.params.id;
@@ -74,9 +69,6 @@ const getSingleBlog = async (req,res)=>{
 }
 
 const updateBlog = async (req, res) => {
-=======
-const updateBlogs = async (req, res) => {
->>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
   try {
     const blogId = req.params.id;
     const updateBlog = await BlogModal.findByIdAndUpdate(blogId, req.body, {
@@ -124,8 +116,4 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 export { CreateBlog, getAllBlog, getSingleBlog, updateBlog, deleteBlog };
-=======
-export { CreateBlog, getAllBlogs, updateBlogs, deleteBlog };
->>>>>>> 6eaa43a12979ac01fb4081df42794ddc134357f9
