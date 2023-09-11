@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
-import Home from "./components/Home";
-import Footer from "./components/common/Footer";
-import Login from "./components/pages/Login";
-import Signup from "./components/pages/Signup";
+import Home from "./pages/Home";
+// import Footer from "./components/common/Footer";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import OpenRoute from "./components/auth/OpenRoute";
 import PrivateRoute from "./components/auth/PrivateRoute";
-import Profile from "./components/pages/Profile";
-import Error from "./components/pages/Error";
+import Profile from "./pages/Profile";
+import Error from "./pages/Error";
 import "./App.css";
 
 function App() {
@@ -32,14 +32,15 @@ function App() {
             </OpenRoute>
           }
         />
-        <Route to="/profile" element={
+       
+        <Route path="/profile" element={
           <PrivateRoute>
             <Profile/>
           </PrivateRoute>
         } />
-        <Route to="*" element={<Error/>} />
+        <Route path="*" element={<Error/>} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

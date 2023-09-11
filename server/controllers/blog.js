@@ -1,17 +1,41 @@
 import BlogModal from "../models/Blog.js";
+import uploadImageToCloudinary from "../utils/imageUploader.js";
+import * as dotenv from "dotenv"
+dotenv.config()
 
 const CreateBlog = async (req, res) => {
   try {
-    const { title, image, category, description, comments } = req.body;
+    const image = req.files.image;
+    const { title, category, description, comments } = req.body;
+
     if (!title || !category || !description || !comments) {
       return res.status(404).json({
         success: false,
         message: "All fields are required",
       });
     }
+    // upload file in local server
+    // const path =
+    //   __dirname + "/files/" + Date.now() + `.${image.name.split(".")[1]}`;
+    // console.log(path);
+    // image.mv(path, (err) => {
+    //   if (err) {
+    //     return res.status(500).json({ message: 'File upload failed', error: err });
+    //   }
+    // });
+
+
+    const uploadImage = await uploadImageToCloudinary(
+      image,
+      process.env.FOLDER_NAME,
+      1000,
+      1000
+    );
+    console.log(uploadImage)
+
     const blog = await BlogModal.create({
       title,
-      image,
+      image: uploadImage.secure_url,
       category,
       description,
       comments,
@@ -44,29 +68,29 @@ const getAllBlog = async (req, res) => {
   }
 };
 
-const getSingleBlog = async (req,res)=>{
+const getSingleBlog = async (req, res) => {
   try {
     const blogId = req.params.id;
-    console.log(blogId)
-    const blog = await BlogModal.findById(blogId)
-    console.log(blog)
-    if(!blog){
+    console.log(blogId);
+    const blog = await BlogModal.findById(blogId);
+    console.log(blog);
+    if (!blog) {
       return res.status(404).json({
-        success:false,
-        message:`Blog not found` 
-      })
-    }    
+        success: false,
+        message: `Blog not found`,
+      });
+    }
     return res.status(200).json({
-      success:true,
-      blog
-    })
+      success: true,
+      blog,
+    });
   } catch (error) {
     return res.status(404).json({
-      success:false,
-      message:"Blog not found"
-    })
+      success: false,
+      message: "Blog not found",
+    });
   }
-}
+};
 
 const updateBlog = async (req, res) => {
   try {

@@ -1,7 +1,14 @@
 import React from "react";
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
+import {useSelector,useDispatch} from "react-redux"
+import { logout } from "../../redux/slices/opreations/auth";
 
 const Navbar = () => {
+
+  const {token} = useSelector((state)=>state.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   return (
     <header className="w-11/12 h-min container mx-auto pt-5 ">
       <nav className="flex flex-row justify-between items-center">
@@ -36,8 +43,26 @@ const Navbar = () => {
         </div>
 
         <ul className="flex gap-x-3 cursor-pointer font-semibold">
-          <li className="hover:text-sky-500"><Link to="/login">Login</Link></li>
-          <li className="hover:text-sky-500"><Link to="/signup">Sign Up</Link> </li>
+          {
+            token === null  && (
+              <li className="hover:text-sky-500"><Link to="/login">Login</Link></li>
+            )
+          }
+          {
+            token === null && (
+              <li className="hover:text-sky-500"><Link to="/signup">Sign Up</Link> </li>
+            )
+          }
+          {
+            token !== null && (
+              <li><Link>welcome</Link></li>
+            )
+          }
+          {
+            token !== null && (
+              <Link onClick={()=>dispatch(logout(navigate))}>Logout</Link>
+            )
+          }
         </ul>
       </nav>
     </header>

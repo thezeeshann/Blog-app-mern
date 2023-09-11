@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setToken,setLoading } from "../redux/slices/authSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +28,7 @@ const Login = () => {
     if(!email || ! password){
       return toast.error("Please enter email and password")
     }
+    const toastId = toast.loading("Loading...")
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/auth/login",{
@@ -35,14 +37,16 @@ const Login = () => {
         }
       );
       toast.success("Login Successful");
-      const data = response.data
-      console.log(response)
-      localStorage.setItem("token",data.token)
+      dispatch(setToken(response.data.token))
+      localStorage.setItem("token",JSON.stringify(response.data.token))
+      console.log(response.data)
       navigate("/profile");
     } catch (error) {
       console.log("SIGNUP API ERROR............", error.message);
-      navigate("/login");
+      toast.error("Login Failed")
     }
+    dispatch(setLoading(false))
+    toast.dismiss(toastId)
   };
 
   return (
