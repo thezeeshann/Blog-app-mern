@@ -10,8 +10,8 @@ const Footer = () => {
 
         <ul className='flex flex-row gap-x-3  items-center cursor-pointer'>
             <li className='hover:text-sky-500'><FaFacebookF/></li>
-            <li><FaTwitter/></li>
-            <li><FaInstagram/></li>
+            <li className='hover:text-sky-500'><FaTwitter/></li>
+            <li className='hover:text-sky-500'><FaInstagram/></li>
         </ul>
         <div>
             <p>Developed by <Link className='hover:text-sky-500' to="https://github.com/thezeeshann" target='_blank'>@thezeeshann</Link></p>
