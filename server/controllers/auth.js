@@ -64,31 +64,31 @@ const login = async (req, res) => {
         message: "User doest not exists",
       });
     }
-    const passwordMatch = bcrypt.compare(password, existsUser.password);
-    if (!passwordMatch) {
-      return res.status().json({
+
+    if (await bcrypt.compare(password, existsUser.password)) {
+      const payload = {
+        userId: existsUser._id,
+        email: existsUser.email,
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
+      existsUser.token = token;
+
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        token: token,
+        existsUser,
+      });
+    } else {
+      return res.status(500).json({
         success: false,
         message: "Incorrect password",
       });
     }
-
-    const payload = {
-      userId: existsUser._id,
-      email: existsUser.email,
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    existsUser.token = token
-
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token: token,
-      existsUser
-    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

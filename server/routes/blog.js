@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  CreateBlog,
+  createBlog,
   getAllBlog,
   getSingleBlog,
   updateBlog,
@@ -9,10 +9,10 @@ import {
 
 const router = express.Router();
 
-router.post("/create", CreateBlog);
-router.get("", getAllBlog);
-router.get("/:id", getSingleBlog);
-router.put("/:id", updateBlog);
-router.delete("/:id", deleteBlog);
+router.post("/createBlog", createBlog);
+router.get("/getAllBlog", getAllBlog);
+router.get("/getSingleBlog/:id", getSingleBlog);
+router.put("/updateBlog", updateBlog);
+router.delete("/deleteBlog", deleteBlog);
 
 export default router;

@@ -1,24 +1,31 @@
 import { toast } from "react-toastify";
 import { setBlogs, setLoading } from "../../redux/slices/blogSlice";
-import axios from "axios";
+import { apiConnector } from "../apiConnetor";
+import { blogEndpoints } from "../apis";
 
-export const getAllBlogs = () => {
+const {
+  GET_ALL_BLOGS_API,
+  GET_SINGLE_BLOG_API,
+  CREATE_BLOG_API,
+  UPDATE_BLOG_API,
+  DELETE_BLOG_API,
+} = blogEndpoints;
+
+export function getAllBlogs() {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading....");
+    // const toastId = toast.loading("Loadng...");
+    dispatch(setLoading(true));
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/blog");
-      console.log(response.data);
-
-      if (response.data.success) {
-        dispatch(setBlogs(response.data));
-      } else {
-        throw new Error(response.data.message);
+      const response = await apiConnector("GET", GET_ALL_BLOGS_API);
+      // console.log(response.data);
+      if (!response.data.success) {
+        throw new Error(response.data);
       }
+      dispatch(setBlogs(response.data));
     } catch (error) {
-      console.error("All blogs API error:", error.message);
-    } finally {
-      toast.dismiss(toastId);
-      dispatch(setLoading(false));
+      console.log("ALL BLOGS API ERROR............", error);
     }
+    dispatch(setLoading(false));
+    // toast.dismiss(toastId);
   };
-};
+}

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import {useDispatch} from "react-redux"
 import { signUp } from "../services/opreations/auth";
 
@@ -10,11 +9,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
-=======
-import axios from "axios";
-
-const Signup = () => {
->>>>>>> 6e8688a26a63a1d6e96b18b12c7ecd0e0843a5b6
   const [formdData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -23,12 +17,7 @@ const Signup = () => {
     confirmPassword: "",
   });
 
-<<<<<<< HEAD
  
-=======
-  const navigate = useNavigate();
-
->>>>>>> 6e8688a26a63a1d6e96b18b12c7ecd0e0843a5b6
   const { firstName, lastName, email, password, confirmPassword } = formdData;
 
   const handleSubmit = async (e) => {
@@ -38,24 +27,8 @@ const Signup = () => {
       return toast.error("Password does not match");
     }
 
-<<<<<<< HEAD
     dispatch(signUp(firstName,lastName,email,password,confirmPassword,navigate))
 
-=======
-    try {
-      await axios.post("http://localhost:8000/api/v1/auth/signup", formdData,{
-        headers:{
-          "Content-Type":"application/json"
-        }
-      });
-      toast.success("Signup Successful");
-      navigate("/login");
-    } catch (error) {
-      console.log("SIGNUP API ERROR............", error.message);
-      toast.error("Something went wrong")
-      navigate("/signup");
-    }
->>>>>>> 6e8688a26a63a1d6e96b18b12c7ecd0e0843a5b6
   };
 
   const handleChange = (e) => {

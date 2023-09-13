@@ -21,7 +21,10 @@ app.use(fileUpload({
     tempFileDir : '/tmp'
 }))
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({
+	credentials:true,
+	origin:"http://localhost:3000",
+}))
 // routes
 app.use("/api/v1/auth",userRoute)
 app.use("/api/v1/blog",blogRoute)

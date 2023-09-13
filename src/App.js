@@ -8,6 +8,7 @@ import OpenRoute from "./components/auth/OpenRoute";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import Profile from "./pages/Profile";
 import Error from "./pages/Error";
+import SignleBlog from "./pages/blog/SignleBlog";
 import "./App.css";
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/blog/:blogId" element={<SignleBlog/>} />
+
         <Route
           path="/login"
           element={

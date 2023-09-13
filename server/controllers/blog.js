@@ -1,9 +1,9 @@
 import BlogModal from "../models/Blog.js";
 import uploadImageToCloudinary from "../utils/imageUploader.js";
-import * as dotenv from "dotenv"
-dotenv.config()
+import * as dotenv from "dotenv";
+dotenv.config();
 
-const CreateBlog = async (req, res) => {
+const createBlog = async (req, res) => {
   try {
     const image = req.files.image;
     const { title, category, description, comments } = req.body;
@@ -14,24 +14,13 @@ const CreateBlog = async (req, res) => {
         message: "All fields are required",
       });
     }
-    // upload file in local server
-    // const path =
-    //   __dirname + "/files/" + Date.now() + `.${image.name.split(".")[1]}`;
-    // console.log(path);
-    // image.mv(path, (err) => {
-    //   if (err) {
-    //     return res.status(500).json({ message: 'File upload failed', error: err });
-    //   }
-    // });
-
-
     const uploadImage = await uploadImageToCloudinary(
       image,
       process.env.FOLDER_NAME,
       1000,
       1000
     );
-    console.log(uploadImage)
+    console.log(uploadImage);
 
     const blog = await BlogModal.create({
       title,
@@ -71,18 +60,13 @@ const getAllBlog = async (req, res) => {
 const getSingleBlog = async (req, res) => {
   try {
     const blogId = req.params.id;
-    console.log(blogId);
-    const blog = await BlogModal.findById(blogId);
-    console.log(blog);
-    if (!blog) {
-      return res.status(404).json({
-        success: false,
-        message: `Blog not found`,
-      });
-    }
+    const blogDetails = await BlogModal.findOne({
+      _id:blogId
+    });
+
     return res.status(200).json({
       success: true,
-      blog,
+      blogDetails,
     });
   } catch (error) {
     return res.status(404).json({
@@ -94,7 +78,7 @@ const getSingleBlog = async (req, res) => {
 
 const updateBlog = async (req, res) => {
   try {
-    const blogId = req.params.id;
+    const {blogId} = req.body;
     const updateBlog = await BlogModal.findByIdAndUpdate(blogId, req.body, {
       new: true,
     });
@@ -140,4 +124,4 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-export { CreateBlog, getAllBlog, getSingleBlog, updateBlog, deleteBlog };
+export { createBlog, getAllBlog, getSingleBlog, updateBlog, deleteBlog };
