@@ -1,18 +1,34 @@
-import React from "react";
-import {Link, useNavigate} from "react-router-dom"
-import {useSelector,useDispatch} from "react-redux"
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../services/opreations/auth";
 
 const Navbar = () => {
+  
+  const { token } = useSelector((state) => state.auth);
+  const { blog } = useSelector((state) => state.blogs);
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const {token} = useSelector((state)=>state.auth)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+
+
+  const searchData =
+    searchQuery.length > 0
+      ? blog?.filter((data) =>
+          `${data.title}`
+            .toLocaleLowerCase()
+            .includes(searchQuery.toLocaleLowerCase())
+        )
+      : blog;
 
   return (
     <header className="w-11/12 h-min container mx-auto pt-5 ">
       <nav className="flex flex-row justify-between items-center">
-        <p className="text-2xl font-bold cursor-pointer uppercase"><Link to="/">The Daily Blog</Link></p>
+        <p className="text-2xl font-bold cursor-pointer uppercase">
+          <Link to="/">The Daily Blog</Link>
+        </p>
 
         <div className="max-w-md mx-auto">
           <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-[#1E293B] overflow-hidden">
@@ -37,32 +53,33 @@ const Navbar = () => {
               className="peer h-full w-full outline-none text-sm text-slate-200 pr-2 bg-[#1E293B]"
               type="search"
               id="search"
+              value={searchQuery}
+              name="search"
+              onChange={(e)=>setSearchQuery(e.target.value)}
               placeholder="Search something.."
             />
           </div>
         </div>
 
         <ul className="flex gap-x-3 cursor-pointer font-semibold">
-          {
-            token === null  && (
-              <li className="hover:text-sky-500"><Link to="/login">Login</Link></li>
-            )
-          }
-          {
-            token === null && (
-              <li className="hover:text-sky-500"><Link to="/signup">Sign Up</Link> </li>
-            )
-          }
-          {
-            token !== null && (
-              <li><Link>welcome</Link></li>
-            )
-          }
-          {
-            token !== null && (
-              <Link onClick={()=>dispatch(logout(navigate))}>Logout</Link>
-            )
-          }
+          {token === null && (
+            <li className="hover:text-sky-500">
+              <Link to="/login">Login</Link>
+            </li>
+          )}
+          {token === null && (
+            <li className="hover:text-sky-500">
+              <Link to="/signup">Sign Up</Link>{" "}
+            </li>
+          )}
+          {token !== null && (
+            <li>
+              <Link>welcome</Link>
+            </li>
+          )}
+          {token !== null && (
+            <Link onClick={() => dispatch(logout(navigate))}>Logout</Link>
+          )}
         </ul>
       </nav>
     </header>

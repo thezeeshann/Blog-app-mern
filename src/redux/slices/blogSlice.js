@@ -18,6 +18,6 @@ const blogSlices = createSlice({
   },
 });
 
-export const { setBlogs,setLoading,setError } = blogSlices.actions;
+export const { setBlogs,setLoading } = blogSlices.actions;
 
 export default blogSlices.reducer;

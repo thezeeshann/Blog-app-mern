@@ -49,7 +49,7 @@ const Signup = () => {
           <form onSubmit={handleSubmit}>
             {/* <form> */}
             <div className="mt-5">
-              <label for="username">First Name</label>
+              <label htmlFor="username">First Name</label>
               <input
                 required
                 type="text"
@@ -61,7 +61,7 @@ const Signup = () => {
               />
             </div>
             <div className="mt-5">
-              <label for="username">Last Name</label>
+              <label htmlFor="username">Last Name</label>
               <input
                 type="text"
                 value={lastName}
@@ -73,7 +73,7 @@ const Signup = () => {
               />
             </div>
             <div className="mt-5">
-              <label for="username">Email</label>
+              <label htmlFor="username">Email</label>
               <input
                 required
                 type="text"
@@ -85,7 +85,7 @@ const Signup = () => {
               />
             </div>
             <div className="mt-5">
-              <label for="username">Create Password</label>
+              <label htmlFor="username">Create Password</label>
               <input
                 required
                 type="password"
@@ -97,7 +97,7 @@ const Signup = () => {
               />
             </div>
             <div className="mt-5">
-              <label for="password">Confirm Password</label>
+              <label htmlFor="password">Confirm Password</label>
               <input
                 required
                 type="password"
