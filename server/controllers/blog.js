@@ -1,6 +1,7 @@
 import BlogModal from "../models/Blog.js";
 import CommentModal from "../models/Comment.js";
 import uploadImageToCloudinary from "../utils/imageUploader.js";
+
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -9,7 +10,7 @@ const createBlog = async (req, res) => {
     const image = req.files.image;
     const { title, category, description, comments, user } = req.body;
 
-    if (!title || !category || !description || !comments) {
+    if (!title || !category || !description || !user) {
       return res.status(404).json({
         success: false,
         message: "All fields are required",
@@ -56,80 +57,17 @@ const createBlog = async (req, res) => {
   }
 };
 
-const createComment = async (req, res) => {
-  try {
-    const { comment, blog, user } = req.body;
-    if (!comment || !blog || !user) {
-      return res.status(404).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
-    const commentDoc = await CommentModal.create({
-      comment,
-      blog,
-      user,
-    });
-
-    console.log("create comment");
-
-    await BlogModal.findByIdAndUpdate(blog, {
-      $push: { comments: commentDoc._id },
-    });
-    await BlogModal.findByIdAndUpdate(user, {
-      $push: { user: commentDoc._id },
-    });
-
-    // const updatedComment = await CommentModal.findByIdAndUpdate(
-    //   commentDoc,
-    //   { $push: { blog: commentDoc._id, user: commentDoc._id } },
-    //   { new: true }
-    // ).populate("blog").populate("user").exec();
-
-    const populatedComment = await CommentModal.findById(commentDoc._id)
-      .populate("blog")
-      .populate("user")
-      .exec();
-
-    console.log("update comment");
-
-    return res.status(201).json({
-      success: true,
-      message: "Comment create successfully",
-      commentDoc: populatedComment,
-      // commentDoc
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Unable to create comment",
-    });
-  }
-};
-
-const getAllComments = async (req, res) => {
-  try {
-    const comments = await CommentModal.find()
-      .populate("user")
-      .populate("blog")
-      .exec();
-    return res.status(200).json({
-      success: true,
-      comments,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Comments not found",
-    });
-  }
-};
-
 const getAllBlog = async (req, res) => {
   try {
     const blogs = await BlogModal.find()
       .populate("user")
-      .populate("comments")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          model: "User", // The name of the User model
+        },
+      })
       .exec();
     return res.status(200).json({
       success: true,
@@ -150,7 +88,13 @@ const getSingleBlog = async (req, res) => {
       _id: blogId,
     })
       .populate("user")
-      .populate("comments")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          model: "User", // The name of the User model
+        },
+      })
       .exec();
 
     return res.status(200).json({
@@ -215,12 +159,102 @@ const deleteBlog = async (req, res) => {
   }
 };
 
+// comments
+const createComment = async (req, res) => {
+  try {
+    const { comment, blog, user } = req.body;
+    if (!comment || !blog || !user) {
+      return res.status(404).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+    const commentDoc = await CommentModal.create({
+      comment,
+      blog,
+      user,
+    });
+
+    await BlogModal.findByIdAndUpdate(
+      blog,
+      {
+        $push: { comments: commentDoc._id },
+      },
+      { new: true }
+    );
+    await BlogModal.findByIdAndUpdate(
+      user,
+      {
+        $push: { user: commentDoc._id },
+      },
+      { new: true }
+    );
+
+    const populatedComment = await CommentModal.findById(commentDoc._id)
+      .populate("blog")
+      .populate("user")
+      .exec();
+
+    return res.status(201).json({
+      success: true,
+      message: "Comment create successfully",
+      commentDoc: populatedComment,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Unable to create comment",
+    });
+  }
+};
+
+const getAllComments = async (req, res) => {
+  try {
+    const comments = await CommentModal.find()
+      .populate("user")
+      .populate("blog")
+      .exec();
+    return res.status(200).json({
+      success: true,
+      comments,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Comments not found",
+    });
+  }
+};
+
+const deleteComments = async (req, res) => {
+  try {
+    const { commentId } = req.body;
+    const deleteComment = await CommentModal.findByIdAndDelete(commentId);
+    if (!deleteComment) {
+      return res.status(404).json({
+        success: false,
+        message: `No comment with ${commentId}`,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Comment deleted successfully",
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      message: "Unable to delete comments",
+    });
+  }
+};
+
 export {
   createBlog,
-  createComment,
-  getAllComments,
   getAllBlog,
   getSingleBlog,
   updateBlog,
   deleteBlog,
+  createComment,
+  getAllComments,
+  deleteComments,
 };

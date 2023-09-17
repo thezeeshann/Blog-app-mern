@@ -30,8 +30,8 @@ export function getAllBlogs() {
   };
 }
 
-export async function deleteBlog(blogId,navigate) {
-  const toastId = toast.loading("Loading...")
+export async function deleteBlog(blogId, navigate) {
+  const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector("DELETE", DELETE_BLOG_API, blogId);
     console.log("DELETE COURSE API RESPONSE............", response);
@@ -39,10 +39,12 @@ export async function deleteBlog(blogId,navigate) {
       throw new Error("Could Not Delete Course");
     }
     toast.success("Blog Deleted");
-    navigate("/")
+    navigate("/");
   } catch (error) {
     console.log("DELETE COURSE API ERROR............", error);
     toast.error(error.message);
   }
-  toast.dismiss(toastId)
+  toast.dismiss(toastId);
 }
+
+// loggin to comment on this blog

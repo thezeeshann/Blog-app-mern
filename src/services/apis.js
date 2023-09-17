@@ -11,4 +11,5 @@ export const blogEndpoints = {
     GET_SINGLE_BLOG_API:BASE_URL+"/blog/getSingleBlog",
     UPDATE_BLOG_API:BASE_URL+"/blog/updateBlog",
     DELETE_BLOG_API:BASE_URL+"/blog/deleteBlog",
+    CREATE_COMMENT_API:BASE_URL+"/blog/createComment"
 }

@@ -4,15 +4,12 @@ import { FaTrash } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import formatTimestamp from "../../utils/dateFormat";
 import { deleteBlog } from "../../services/opreations/blog";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const SingleBlogCard = ({ singleBlog }) => {
-  
-  const formattedDate = formatTimestamp(singleBlog.createdAt);
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
   const handleBlogDelete = async (blogId) => {
-    await deleteBlog({blogId:blogId},navigate);
+    await deleteBlog({ blogId: blogId }, navigate);
   };
 
   return (
@@ -39,7 +36,7 @@ const SingleBlogCard = ({ singleBlog }) => {
           </span>
         ))}
         <span className="bg-bgColorTwo rounded-lg py-1.5 px-3">
-          {formattedDate}
+          {formatTimestamp(singleBlog.createdAt)}
         </span>
       </div>
       <div>
@@ -52,32 +49,35 @@ const SingleBlogCard = ({ singleBlog }) => {
       <div className=" py-5">
         <p>{singleBlog.description}</p>
         <div className="pt-3">
-          <span className="font-bold text-xl">Categories:</span>{" "}
+          <span className="font-bold text-xl">Categories: </span>{" "}
           <span className="bg-bgColorTwo rounded-lg py-1.5 px-3">
             {singleBlog.category}
           </span>{" "}
         </div>
       </div>
       <div className="mt-3 ">
-        <p className="font-bold text-xl">Comments:</p>
+        <p className="font-bold text-xl">Comments: </p>
         <div className="flex gap-y-3 flex-col">
-          <div className="mt-1 w-2/4 bg-bgColorTwo py-1 rounded-md">
-            <div className="flex justify-between px-3">
-              {singleBlog.user?.map((user) => (
-                <p key={user._id}>{user.lastName}</p>
-              ))}
+          {singleBlog.comments?.map((comment) => (
+            <div
+              key={comment._id}
+              className="mt-1 w-2/4 bg-bgColorTwo py-2 rounded-md"
+            >
+              <div className="flex justify-between px-3">
+                <p className="capitalize font-semibold text-gray-400">
+                  @{comment.user.lastName}
+                </p>
 
-              <span>{formattedDate}</span>
+                <span className="text-gray-400 font-semibold">
+                  {formatTimestamp(comment.createdAt)}
+                </span>
+              </div>
+
+              <p className="mt-3 px-3  text-slate-500 capitalize">
+                {comment.comment}
+              </p>
             </div>
-            <p className="mt-3 px-3">this is cool</p>
-          </div>
-          <div className="pt-2 w-2/4 bg-bgColorTwo py-1 rounded-md">
-            <div className="flex justify-between px-3">
-              <p>@james</p>
-              <span>sun Aug 23 06 01</span>
-            </div>
-            <p className="mt-3 px-3">this is cool</p>
-          </div>
+          ))}
         </div>
         <div className="mt-5 w-2/4 flex justify-between">
           <input

@@ -98,4 +98,44 @@ const login = async (req, res) => {
   }
 };
 
-export { signup, login };
+const getAllUser = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    return res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    return (
+      res.status(404).json *
+      {
+        success: false,
+        message: "Can't find user",
+      }
+    );
+  }
+};
+
+const getSingleUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const user = await UserModel.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: `No user with ${userId}`,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      message: "Unable to find user",
+    });
+  }
+};
+
+export { signup, login, getAllUser, getSingleUser };
