@@ -1,6 +1,7 @@
 import UserModel from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import validator from "validator";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -16,6 +17,13 @@ const signup = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(404).json({
         message: "Password does not match",
+      });
+    }
+    const validEmail = validator.isEmail(req.body.email);
+    if (!validEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Email Address",
       });
     }
     const existUser = await UserModel.findOne({ email });
@@ -72,15 +80,21 @@ const login = async (req, res) => {
       };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "24h",
       });
 
       existsUser.token = token;
 
-      return res.status(200).json({
+      // set cookies
+      const options = {
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 100),
+        httpOnly: true,
+      };
+
+      return res.cookie("token", token, options).status(200).json({
         success: true,
-        message: "Login successful",
-        token: token,
+        message: "Login Successful",
+        token,
         existsUser,
       });
     } else {
@@ -98,44 +112,34 @@ const login = async (req, res) => {
   }
 };
 
-const getAllUser = async (req, res) => {
-  try {
-    const users = await UserModel.find();
-    return res.status(200).json({
-      success: true,
-      users,
-    });
-  } catch (error) {
-    return (
-      res.status(404).json *
-      {
-        success: false,
-        message: "Can't find user",
-      }
-    );
-  }
+const logout = async (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    success: true,
+    message: "Logged Out",
+  });
 };
 
-const getSingleUser = async (req, res) => {
+const getAllUserDetails = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const user = await UserModel.findOne({ _id: userId });
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: `No user with ${userId}`,
-      });
-    }
+    const id = req.existsUser.userId
+    const user = await UserModel.findById(id)
     return res.status(200).json({
       success: true,
       user,
     });
   } catch (error) {
-    return res.status(404).json({
-      success: false,
-      message: "Unable to find user",
-    });
+    return (
+      res.status(404).json({
+        success:false,
+        message: error.message,
+      })
+    );
   }
 };
 
-export { signup, login, getAllUser, getSingleUser };
+
+export { signup, login, logout, getAllUserDetails };

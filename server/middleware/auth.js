@@ -4,8 +4,8 @@ dotenv.config();
 
 const authenticateJwt = (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    if (!token) {
+    const token = req.cookies.token || req.header("Authorization").replace("Bearer ", "");
+    if (!token || token === undefined) {
       return res.status(404).json({
         success: false,
         message: "Token missing",
@@ -13,11 +13,12 @@ const authenticateJwt = (req, res, next) => {
     }
     try {
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decode, "verify token");
+      req.existsUser = decode
+
     } catch (error) {
       return res.status(404).json({
         success: false,
-        message: "wrong while verify the token",
+        message: "Something went wrong while verify the token",
       });
     }
     next();

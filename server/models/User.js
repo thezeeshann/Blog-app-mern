@@ -21,11 +21,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      validator(value) {
-        if (validator.isEmail(value)) {
-          throw new Error("Invalid Email");
-        }
-      },
+      trim: true,
+      lowercase: true,
+      validate: [validator.isEmail, "Invalid Email Address"],
     },
     password: {
       type: String,
@@ -39,8 +37,6 @@ const UserSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-
 
 const UserModel = mongoose.model("User", UserSchema);
 export default UserModel;

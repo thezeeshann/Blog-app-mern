@@ -1,4 +1,5 @@
 import express from "express";
+import authenticateJwt from "../middleware/auth.js";
 import {
   createBlog,
   getAllBlog,
@@ -12,14 +13,15 @@ import {
 
 const router = express.Router();
 
-router.post("/createBlog", createBlog);
+router.post("/createBlog",authenticateJwt, createBlog);
 router.get("/getAllBlog", getAllBlog);
 router.get("/getSingleBlog/:id", getSingleBlog);
-router.put("/updateBlog", updateBlog);
-router.delete("/deleteBlog", deleteBlog);
+router.put("/updateBlog",authenticateJwt, updateBlog);
+router.delete("/deleteBlog",authenticateJwt, deleteBlog);
+
 // comments
 router.get("/getAllComments", getAllComments);
-router.post("/createComment", createComment);
-router.delete("/deleteComment", deleteComments);
+router.post("/createComment",authenticateJwt, createComment);
+router.delete("/deleteComment",authenticateJwt, deleteComments);
 
 export default router;

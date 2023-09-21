@@ -1,5 +1,5 @@
 import express from "express"
-import { signup,login,getAllUser,getSingleUser } from "../controllers/auth.js"
+import { signup,login,getAllUserDetails,logout } from "../controllers/auth.js"
 import authenticateJwt from "../middleware/auth.js"
 
 const router = express.Router()
@@ -12,8 +12,8 @@ router.get("/test",authenticateJwt,(req,res)=>{
 })
 router.post("/signup",signup)
 router.post("/login",login)
-router.get("/getAllUsers",getAllUser)
-router.get("/getSingleUser",getSingleUser)
+router.get("/logout",logout)
+router.get("/getAllUsers",authenticateJwt,getAllUserDetails)
 
 
 export default router
