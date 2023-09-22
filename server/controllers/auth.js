@@ -129,7 +129,7 @@ const getAllUserDetails = async (req, res) => {
     const user = await UserModel.findById(id)
     return res.status(200).json({
       success: true,
-      user,
+      data:user,
     });
   } catch (error) {
     return (

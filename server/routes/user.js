@@ -13,7 +13,7 @@ router.get("/test",authenticateJwt,(req,res)=>{
 router.post("/signup",signup)
 router.post("/login",login)
 router.get("/logout",logout)
-router.get("/getAllUsers",authenticateJwt,getAllUserDetails)
+router.get("/getAllUserDetails",authenticateJwt,getAllUserDetails)
 
 
 export default router
