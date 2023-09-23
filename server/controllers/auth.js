@@ -1,4 +1,5 @@
 import UserModel from "../models/User.js";
+import BlogModal from "../models/Blog.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import validator from "validator";
@@ -125,21 +126,34 @@ const logout = async (req, res) => {
 
 const getAllUserDetails = async (req, res) => {
   try {
-    const id = req.existsUser.userId
-    const user = await UserModel.findById(id)
+    const id = req.existsUser.userId;
+    const user = await UserModel.findById(id);
     return res.status(200).json({
       success: true,
-      data:user,
+      data: user,
     });
   } catch (error) {
-    return (
-      res.status(404).json({
-        success:false,
-        message: error.message,
-      })
-    );
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
+const getMyAllBlogs = async (req, res) => {
+  try {
+    const userId = req.existsUser.userId;
+    const blog = await BlogModal.find({ user: userId });
+    return res.status(200).json({
+      success: true,
+      data: blog,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
-export { signup, login, logout, getAllUserDetails };
+export { signup, login, logout, getAllUserDetails, getMyAllBlogs };
