@@ -13,9 +13,9 @@ import {
 
 const router = express.Router();
 
-router.post("/createBlog",authenticateJwt, createBlog);
 router.get("/getAllBlog", getAllBlog);
 router.get("/getSingleBlog/:id", getSingleBlog);
+router.post("/createBlog",authenticateJwt, createBlog);
 router.put("/updateBlog",authenticateJwt, updateBlog);
 router.delete("/deleteBlog",authenticateJwt, deleteBlog);
 

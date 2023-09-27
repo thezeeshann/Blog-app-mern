@@ -143,7 +143,13 @@ const getAllUserDetails = async (req, res) => {
 const getMyAllBlogs = async (req, res) => {
   try {
     const userId = req.existsUser.userId;
-    const blog = await BlogModal.find({ user: userId });
+    const blog = await BlogModal.find({ user: userId }).populate("user").populate({
+      path:"comments",
+      populate:{
+        path: "user",
+          model: "User",
+      }
+    }).exec();
     return res.status(200).json({
       success: true,
       data: blog,
