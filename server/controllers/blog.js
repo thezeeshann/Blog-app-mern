@@ -105,25 +105,61 @@ const getSingleBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const { blogId } = req.body;
-    const updateBlog = await BlogModal.findByIdAndUpdate(blogId, req.body, {
-      new: true,
-    });
-    if (!updateBlog) {
+    const updates = req.body;
+    const userId = req.existsUser.userId;
+
+    // Find the blog by ID and check if it exists
+    const blog = await BlogModal.findById({ _id: blogId });
+
+    if (!blog) {
       return res.status(404).json({
         success: false,
         message: `No Blog with ${blogId}`,
       });
     }
+
+    // Check if the authenticated user is the owner of the blog
+    if (blog.user.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this blog.",
+      });
+    }
+
+    // if image found update it
+    if (req.files) {
+      const image = req.files.image;
+      const blogImage = await uploadImageToCloudinary(
+        image,
+        process.env.FOLDER_NAME
+      );
+      blog.image = blogImage.secure_url;
+    }
+
+    for (const key in updates) {
+      if (updates.hasOwnProperty(key)) {
+        blog[key] = updates[key];
+      }
+    }
+
+    await blog.save();
+
+    const updatedBlog = await BlogModal.findOne({
+      _id: blogId,
+    })
+      .populate("user")
+      .exec();
+
     return res.status(200).json({
       success: true,
       message: "Data updated successfully",
-      updateBlog,
+      data: updatedBlog,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
       success: false,
-      message: "Blogs not found",
+      message: "An error occurred while updating the blog",
     });
   }
 };
@@ -131,12 +167,20 @@ const updateBlog = async (req, res) => {
 const deleteBlog = async (req, res) => {
   try {
     const { blogId } = req.body;
-    const blog = await BlogModal.findById(blogId).populate("comments");
+    const userId = req.existsUser.userId;
+    const blog = await BlogModal.findById(blogId);
 
     if (!blog) {
       return res.status(404).json({
         success: false,
         message: `No Blog with ${blogId}`,
+      });
+    }
+
+    if (blog.user.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this blog.",
       });
     }
 
@@ -227,21 +271,42 @@ const getAllComments = async (req, res) => {
 const deleteComments = async (req, res) => {
   try {
     const { commentId } = req.body;
+    const userId = req.existsUser.userId;
+
+    const comment = await CommentModal.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).json({
+        success: false,
+        message: `No comment with ID ${commentId}`,
+      });
+    }
+
+    if (comment.user.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this comment",
+      });
+    }
+
     const deleteComment = await CommentModal.findByIdAndDelete(commentId);
+
     if (!deleteComment) {
       return res.status(404).json({
         success: false,
-        message: `No comment with ${commentId}`,
+        message: `No comment with ID ${commentId}`,
       });
     }
+
     return res.status(200).json({
       success: true,
       message: "Comment deleted successfully",
     });
   } catch (error) {
-    return res.status(404).json({
+    console.error("Error:", error);
+    return res.status(500).json({
       success: false,
-      message: "Unable to delete comments",
+      message: "Unable to delete comment",
     });
   }
 };
