@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   blogs: [],
+  getSingleBlog :[],
   loading:false
 };
 
@@ -12,12 +13,15 @@ const blogSlices = createSlice({
     setBlogs: (state, action) => {
       state.blogs = action.payload;
     },
+    getSingleBlog:(state,action)=>{
+      state.getSingleBlog = action.payload
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
   },
 });
 
-export const { setBlogs,setLoading } = blogSlices.actions;
+export const { setBlogs,getSingleBlog, setLoading } = blogSlices.actions;
 
 export default blogSlices.reducer;
