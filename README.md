@@ -47,6 +47,9 @@ We love our contributors! Here's how you can contribute:
 
 🎞
 
+
+![screencapture-localhost-3000-2023-10-03-02_10_35](https://github.com/thezeeshann/Blog-app-mern/assets/88139550/547479df-614b-4840-99ef-9b31efd9bed1)
+
 ![screencapture-localhost-3000-signup-2023-10-03-01_48_51](https://github.com/thezeeshann/Blog-app-mern/assets/88139550/7f90943e-f6d5-4b66-a9e0-16d60bd5f586)
 
 ![screencapture-localhost-3000-login-2023-10-03-01_49_01](https://github.com/thezeeshann/Blog-app-mern/assets/88139550/9e929294-69e6-44d2-bc39-86a0f9453538)
