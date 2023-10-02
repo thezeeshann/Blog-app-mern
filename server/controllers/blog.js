@@ -58,7 +58,7 @@ const createBlog = async (req, res) => {
 
 const getAllBlog = async (req, res) => {
   try {
-    const blogs = await BlogModal.find().populate("user").exec();
+    const blogs = await BlogModal.find().populate("user").sort({ createdAt: -1 }).exec();
     return res.status(200).json({
       success: true,
       blogs,
