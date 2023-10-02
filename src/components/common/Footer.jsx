@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
-    <footer className='flex flex-row justify-between w-11/12 mx-auto container mb-5 '>
+    <footer className='flex flex-row justify-between lg:w-11/12 md:w-10/12 sm:w-9/12 mx-auto container mb-5 '>
         
-        <p className="text-1xl font-bold cursor-pointer uppercase">The Daily Blog</p>
+        <p className="lg:text-1xl md:text-lg font-bold cursor-pointer uppercase">The Daily Blog</p>
 
         <ul className='flex flex-row gap-x-3  items-center cursor-pointer'>
             <li className='hover:text-sky-500'><FaFacebookF/></li>
