@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   blogs: [],
-  getSingleBlog :[],
+  getSingleBlog :{
+    comments: [], 
+  },
   loading:false
 };
 
@@ -16,12 +18,15 @@ const blogSlices = createSlice({
     getSingleBlog:(state,action)=>{
       state.getSingleBlog = action.payload
     },
+    addCommentToSingleBlog: (state, action) => {
+      state.getSingleBlog.comments.push(action.payload);
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
   },
 });
 
-export const { setBlogs,getSingleBlog, setLoading } = blogSlices.actions;
+export const { setBlogs,getSingleBlog,addCommentToSingleBlog, setLoading } = blogSlices.actions;
 
 export default blogSlices.reducer;

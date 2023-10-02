@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { setBlogs, setLoading } from "../../redux/slices/blogSlice";
+import { setBlogs,addCommentToSingleBlog, setLoading } from "../../redux/slices/blogSlice";
 import { apiConnector } from "../apiConnetor";
 import { blogEndpoints } from "../apis";
 
@@ -96,11 +96,11 @@ export async function deleteBlog(blogId, token, navigate) {
 }
 
 // comment
-export async function createComment(data, token) {
+export async function createComment(data,dispatch, token) {
   // return async (dispatch) => {
   //   dispatch(setLoading(true));
   const toastId = toast.loading("Loading...");
-  let result = null;
+  // let result = null;
   try {
     const response = await apiConnector("POST", CREATE_COMMENT_API, data, {
       Authorization: `Bearer ${token}`,
@@ -110,14 +110,15 @@ export async function createComment(data, token) {
       throw new Error(response.data.message);
     }
     toast.success("Comment posted");
-    result = response?.data?.data;
+    const newComment = response?.data?.data;
+    dispatch(addCommentToSingleBlog(newComment))
   } catch (error) {
     console.log("CREATE COMMENT API ERROR............", error);
     toast.error(error.message);
   }
 
   toast.dismiss(toastId);
-  return result;
+  // return result;
   //   dispatch(setLoading(false));
   // };
 }
