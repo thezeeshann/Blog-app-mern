@@ -22,7 +22,7 @@ const MyBlogs = () => {
       }
       setLoading(false);
     })();
-  }, []);
+  }, [token]);
 
   return (
     <>

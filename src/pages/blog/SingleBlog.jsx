@@ -133,7 +133,7 @@ const SingleBlog = () => {
       <div className="flex flex-col gap-y-5">
         <div className="flex flex-row justify-between">
           <div>
-            <h1 className="font-bold text-2xl normal-case">
+            <h1 className="font-bold text-2xl sm:text-xl xs:text-xl small-xs:text-xl normal-case">
               {singleBlog.title}
             </h1>
           </div>
@@ -184,7 +184,7 @@ const SingleBlog = () => {
           />
         </div>
         <div className=" py-5">
-          <p className="text-lg">{singleBlog.description}</p>
+          <p className="text-lg sm:text-base xs:text-base small-xs:text-base">{singleBlog.description}</p>
           <div className="pt-3">
             <span className="font-bold text-xl">Categories: </span>{" "}
             <span className="bg-bgColorTwo rounded-lg py-1.5 px-3">
@@ -192,13 +192,15 @@ const SingleBlog = () => {
             </span>{" "}
           </div>
         </div>
-        <div className="mt-3 ">
-          <p className="font-bold text-xl">Comments: </p>
+        <div className="mt-3 flex flex-col gap-x-5">
+        {/* all comments */}
+         <div className="w-[50%] sm:w-full xs:w-full small-xs:w-full">
+         <p className="font-bold text-xl">Comments: </p>
           <div className="flex gap-y-3 flex-col">
             {singleBlog.comments?.map((comment) => (
               <div
                 key={comment._id}
-                className="mt-1 w-2/4 bg-bgColorTwo py-2 rounded-md"
+                className="mt-1  bg-bgColorTwo py-2 rounded-md"
               >
                 <div className="flex justify-between px-3">
                   <p className="capitalize font-semibold text-gray-400">
@@ -220,23 +222,27 @@ const SingleBlog = () => {
               </div>
             ))}
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mt-5 w-2/4 flex gap-x-5 justify-between">
+         </div>
+         {/* add comment */}
+         <div className="w-[50%] sm:w-full xs:w-full small-xs:w-full">
+         <form onSubmit={handleSubmit}>
+            <div className="mt-5 flex gap-x-5 justify-between">
               <input
                 value={comment || ""}
                 onChange={(e) => setComment(e.target.value)}
                 type="text"
-                className="border-none outline-none bg-bgColorTwo rounded-md py-2 px-2 placeholder:text-sm w-2/3"
+                className="border-none outline-none bg-bgColorTwo rounded-md py-2 px-2 placeholder:text-sm w-[80%]"
                 placeholder="Write a comments..."
               />
               <button
                 type="submit"
-                className="bg-bgColorTwo px-3 rounded-md font-semibold text-sm w-1/3"
+                className="bg-bgColorTwo px-3 rounded-md font-semibold text-sm w-[20%]"
               >
-                Add Comments
+                Add
               </button>
             </div>
           </form>
+         </div>
         </div>
       </div>
     </section>

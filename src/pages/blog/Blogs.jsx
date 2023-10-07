@@ -7,7 +7,6 @@ import formatTimestamp from "../../utils/dateFormat";
 import Spinner from "../../components/common/Spinner";
 
 const Blogs = ({ searchData }) => {
-
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.blogs.loading);
 
@@ -25,30 +24,30 @@ const Blogs = ({ searchData }) => {
         searchData.map((blog) => (
           <div
             key={blog._id}
-            className="flex flex-row bg-slate-800 gap-x-5 px-3 py-3 rounded-md "
+            className="lg:flex lg:flex-row md:flex md:flex-row sm:flex sm:flex-col xs:flex xs:flex-col rounded-md bg-slate-800 lg:gap-x-5 lg:px-3 lg:py-3 md:gap-x-3 md:px-2 md:py-2 sm:gap-x-3 sm:gap-y-3 sm:px-3 sm:py-3  xs:gap-y-3 xs:px-3 xs:py-3  small-xs:gap-y-5 small-xs:px-3 small-xs:py-3 "
           >
-            <div className="w-4/12 cursor-pointer">
+            <div className="lg:w-4/12 md:w-2/5 sm:w-full xs:w-full small-xs:w-full cursor-pointer">
               <Link to={`/blog/${blog._id}`}>
                 <img
                   src={blog.image ? blog.image : dummyImage}
-                  className="w-full h-full"
+                  className="lg:w-full lg:h-full md:w-full md:h-full sm:w-full sm:h-full xs:w-full xs:h-full small-xs:w-full small-xs:h-full"
                   alt={blog.image}
                 />
               </Link>
             </div>
-            <div className="w-8/12 flex flex-col gap-y-5">
+            <div className="lg:w-8/12 md:w-3/5 sm:w-full xs:w-full flex flex-col gap-y-5">
               <div>
-                <p className="font-bold text-2xl">{blog.title}</p>
+                <p className="font-bold lg:text-2xl md:text-xl">{blog.title}</p>
                 <div className="flex flex-row justify-between mt-2">
                   <div className="text-gray-500 font-semibold bg-[#303540] px-2 py-1 rounded-md">
                     {blog.user?.map((user) => (
-                      <p key={user._id} className="text-sm">
+                      <p key={user._id} className="lg:text-sm md:text-xs">
                         @{user?.lastName || "user"}
                       </p>
                     ))}
                   </div>
                   <div className="text-gray-500 font-semibold  bg-[#303540] px-2 py-1 rounded-md">
-                    <p className="text-sm">
+                    <p className="lg:text-sm md:text-xs">
                       {}
                       {formatTimestamp(blog.createdAt)}
                     </p>
@@ -56,7 +55,7 @@ const Blogs = ({ searchData }) => {
                 </div>
               </div>
               <div className="flex justify-start">
-                <p className="text-base text-gray-300">
+                <p className="lg:text-base md:text-sm text-gray-300">
                   {" "}
                   {blog.description
                     ? `${blog.description.slice(0, 300)}...`

@@ -9,13 +9,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
   const { token } = useSelector((state) => state.auth);
 
   return (
-    <header className="lg:w-11/12 md:w-10/12 sm:w-9/12 h-min container mx-auto pt-5 ">
+    <header className="lg:w-11/12 md:w-11/12 sm:w-11/12 xs:w-11/12 small-xs:w-11/12  h-min container mx-auto pt-5 ">
       <nav className="flex flex-row justify-between items-center">
         <p className="lg:text-2xl md:text-xl sm:text-lg font-bold cursor-pointer uppercase">
-          <Link to="/">The Daily Blog</Link>
+          <Link to="/" className="">The Daily Blog</Link>
         </p>
 
-        <div className="md:max-w-md mx-auto">
+        <div className="small-xs:hidden lg:flex md:flex sm:flex md:max-w-md mx-auto">
           <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-[#1E293B] overflow-hidden">
             <div className="grid place-items-center h-full w-12 text-gray-300">
               <svg
