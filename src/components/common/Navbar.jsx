@@ -5,7 +5,7 @@ import ProfileDropdown from "../auth/ProfileDropdown";
 
 import Search from "./Search";
 
-const Navbar = () => {
+const Navbar = ({searchQuery,setSearchQuery}) => {
   const { token } = useSelector((state) => state.auth);
 
   return (
@@ -15,7 +15,7 @@ const Navbar = () => {
           <Link to="/">The Daily Blog</Link>
         </p>
 
-        <Search />
+        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         <ul className="flex gap-x-3 cursor-pointer font-semibold">
           {token === null && (

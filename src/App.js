@@ -14,12 +14,26 @@ import CreateBlog from "./pages/blog/CreateBlog";
 import UpdateBlog from "./pages/blog/UpdateBlog";
 import "./App.css";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { getAllUserDetails } from "./services/opreations/auth";
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const blog = useSelector((state) => state.blogs);
+  const blogsData = blog.blogs.blogs;
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchData =
+    blogsData?.length > 0
+      ? blogsData?.filter((data) =>
+          `${data.title}`
+            .toLocaleLowerCase()
+            .includes(searchQuery.toLocaleLowerCase())
+        )
+      : blog;
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       const token = JSON.parse(localStorage.getItem("token"));
@@ -30,9 +44,9 @@ function App() {
 
   return (
     <div className="flex overflow-x-hidden flex-col min-h-screen w-full bg-[#0F172A] text-slate-200 ">
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home searchData={searchData} />} />
         <Route path="/blog/:blogId" element={<SingleBlog />} />
 
         <Route

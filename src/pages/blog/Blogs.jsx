@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import dummyImage from "../../assets/javascript.webp";
 import { getAllBlogs } from "../../services/opreations/blog";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import formatTimestamp from "../../utils/dateFormat";
 import Spinner from "../../components/common/Spinner";
-import Search from "../../components/common/Search";
 
-const Blogs = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+const Blogs = ({ searchData }) => {
+
   const dispatch = useDispatch();
-  const blog = useSelector((state) => state.blogs);
   const loading = useSelector((state) => state.blogs.loading);
-  const blogsData = blog.blogs.blogs;
-
-  const searchData =
-    blogsData?.length > 0
-      ? blogsData?.filter((data) =>
-          `${data.title}`
-            .toLocaleLowerCase()
-            .includes(searchQuery.toLocaleLowerCase())
-        )
-      : blog;
 
   useEffect(() => {
     dispatch(getAllBlogs());
@@ -29,7 +17,6 @@ const Blogs = () => {
 
   return (
     <>
-    {/* <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} /> */}
       {loading === true ? (
         <div className="flex justify-center items-center h-screen">
           <Spinner />
@@ -69,7 +56,12 @@ const Blogs = () => {
                 </div>
               </div>
               <div className="flex justify-start">
-                <p className="text-base text-gray-300">  {blog.description ? `${blog.description.slice(0, 300)}...` : blog.description}</p>
+                <p className="text-base text-gray-300">
+                  {" "}
+                  {blog.description
+                    ? `${blog.description.slice(0, 300)}...`
+                    : blog.description}
+                </p>
               </div>
             </div>
           </div>
